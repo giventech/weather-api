@@ -1,19 +1,5 @@
 # Getting Started
 
-### Reference Documentation
-For further reference, please consider the following sections:
-
-* [Official Gradle documentation](https://docs.gradle.org)
-* [Spring Boot Gradle Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/3.3.2/gradle-plugin/reference/html/)
-* [Create an OCI image](https://docs.spring.io/spring-boot/docs/3.3.2/gradle-plugin/reference/html/#build-image)
-* [Spring Boot Testcontainers support](https://docs.spring.io/spring-boot/docs/3.3.2/reference/html/features.html#features.testing.testcontainers)
-* [Spring Data JPA](https://docs.spring.io/spring-boot/docs/3.3.2/reference/htmlsingle/index.html#data.sql.jpa-and-spring-data)
-* [Spring Boot DevTools](https://docs.spring.io/spring-boot/docs/3.3.2/reference/htmlsingle/index.html#using.devtools)
-* [Testcontainers](https://java.testcontainers.org/)
-* [Validation](https://docs.spring.io/spring-boot/docs/3.3.2/reference/htmlsingle/index.html#io.validation)
-* [Spring Web](https://docs.spring.io/spring-boot/docs/3.3.2/reference/htmlsingle/index.html#web)
-* [Spring Reactive Web](https://docs.spring.io/spring-boot/docs/3.3.2/reference/htmlsingle/index.html#web.reactive)
-
 ### Guides
 The following guides illustrate how to use some features concretely:
 
@@ -61,6 +47,7 @@ Your service should:
 
 
 
+### Controller Lay
 
 ### Service layer
 
@@ -69,8 +56,7 @@ Webclient is used for non blocking request to
 
 **RateLimitingService**
 
-Given HTTP Header including  API key
-The API Service ensure check the whether user is within the rate limit limit 
+Given HTTP Header including API key,The API Service ensure check the whether user is within the rate limit limit 
 So that access to WeatherReportService can be decided
 Acceptance: Criteria
 
@@ -83,7 +69,7 @@ First API call time - last API time > Rate Limit Time ( configurable)
 given API key, current when count of API call exeeds X=5 ( configurable)
 - return HttpError code 429
 - return "Too many requests" to users
-Given an API key stored in the applicataion (Hard coded for use case sake)
+Given an API key stored in the application  (Hard coded for use case sake)
 - 
 Utilise Bucket4J to handle 
 
@@ -92,6 +78,7 @@ Utilise Bucket4J to handle
 **WeatherReportServiceImpl**
 
 **Cache Management of Cache**
+
 Given a set of API request
 I want to query the database for a tuple city country 
 So that I can save on my rate limit with OpenWeaher Rest APPI
@@ -107,12 +94,9 @@ Using annotation @EnableCaching and @Cacheable, @CacheEvict, @Cache Manager  thi
 for which we want to enable cache
 
 **API Validation and Error Management**
-Validation of user entry is performed by the use of @Valid annnotation
+Validation of user entry is performed by the use of @Valid annotation
 Handling of errors is performed using @ControllerAdvice that enables to intercept errors
 It also enable 
-
-
-
 
 
 **ReportRepository**
@@ -126,12 +110,19 @@ It contains only the data that required by the user hence fulfilling en
 
 ### Data Access Layers
 
-**ReportEntity**  Lazy loading
+**ReportEntity**  
+**ReportRepository**
+Implement the entity for reports data 
 
 ### Database*
 
 It stores the city country description the time that the request was performed 
 So that the system know whether this entry must be updated or not
+
+API_KEY (PK: apiKey) count
+API_KEY_WEATHER_REPORT(PK apiKey, city, country) FK: apikey
+WEATHER_REPORT (Pk: Auto Generated) , city, country, description 
+
 
 
 
