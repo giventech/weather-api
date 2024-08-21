@@ -4,6 +4,7 @@ import com.giventech.weather.dto.WeatherResponse;
 import com.giventech.weather.exception.ServerErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -34,7 +35,7 @@ public class WeatherService {
                         clientResponse -> clientResponse.bodyToMono(String.class)
                                 .flatMap(responseBody -> Mono.error(new ServerErrorException(
                                         "API call failed with status code: " + clientResponse.statusCode().value(),
-                                        clientResponse.statusCode().value()
+                                        HttpStatus.valueOf(clientResponse.statusCode().value())
                                 )))
                 )
 

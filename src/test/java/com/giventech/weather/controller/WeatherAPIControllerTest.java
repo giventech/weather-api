@@ -44,10 +44,10 @@ class WeatherAPIControllerTest {
         weatherResponse.setWeather(List.of(Weather.builder().description("clear sky").build()));
 
 
-        Mockito.when(weatherService.getWeather(city, country,APIkey)).thenReturn(Mono.just(weatherResponse));
+        Mockito.when(weatherService.getWeather(city, country, APIkey)).thenReturn(Mono.just(weatherResponse));
 
         // when
-        ResponseEntity<Weather> responseEntity = weatherAPIController.getWeather(city, country,APIkey);
+        ResponseEntity<Weather> responseEntity = weatherAPIController.getWeather(city, country, APIkey);
 
 
         // then
@@ -61,7 +61,7 @@ class WeatherAPIControllerTest {
 
 
     @Test
-     void shouldReturnError400WhenServerIsDown() {
+    void shouldReturnError400WhenServerIsDown() {
         // Arrange
         String city = "London";
         String country = "UK";
@@ -70,32 +70,16 @@ class WeatherAPIControllerTest {
 
         // Mock the WeatherService to simulate server down scenario
         WeatherService weatherServiceMock = Mockito.mock(WeatherService.class);
-        Mockito.when(weatherServiceMock.getWeather(Mockito.anyString(), Mockito.anyString(),Mockito.anyString()))
-                .thenThrow(new ServerErrorException("Server is down", 400));
+        Mockito.when(weatherServiceMock.getWeather(Mockito.anyString(), Mockito.anyString(), Mockito.anyString()))
+                .thenThrow(new ServerErrorException("Server is down", HttpStatus.BAD_REQUEST));
 
         // Inject the mock WeatherService into the WeatherAPIController
         ReflectionTestUtils.setField(weatherAPIController, "weatherService", weatherServiceMock);
 
         // Act
-        ServerErrorException exception = assertThrows(ServerErrorException.class, () ->  weatherAPIController.getWeather(city, country,APIkey));
-   // Assert
+        ServerErrorException exception = assertThrows(ServerErrorException.class, () -> weatherAPIController.getWeather(city, country, APIkey));
+        // Assert
         assertEquals(expectedMessage, exception.getMessage());
     }
 
-
-//    @Test
-//    public void givenPayload_whenServerExceptionThrown_then500ErrorSent() {
-//        // Arrange
-//        String city = "London";
-//        String country = "UK";
-//        String apiKey = "test-api-key";
-//        Mockito.when(weatherService.getWeather(city, country, apiKey)).thenThrow(new ServerErrorException("Server error", HttpStatus.INTERNAL_SERVER_ERROR.value()));
-//
-//        // Act
-//        ResponseEntity<Weather> responseEntity = weatherAPIController.getWeather(city, country, apiKey);
-//
-//        // Assert
-//        assertNotNull(responseEntity);
-//        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-//    }
 }

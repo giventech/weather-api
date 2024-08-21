@@ -37,6 +37,7 @@ public class WeatherControllerIntegrationTest {
                 .willReturn(WireMock.aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
+                        .withHeader("Authorization", "your-api-key")
                         .withBody("{\"weather\": [{\"description\": \"clear sky\"}], \"main\": {\"temp\": 288.55}}")));
     }
 
