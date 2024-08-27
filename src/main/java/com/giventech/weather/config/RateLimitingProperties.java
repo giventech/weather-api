@@ -10,4 +10,5 @@ import org.springframework.stereotype.Component;
 public class RateLimitingProperties {
     private int maxRequests;
     private int maxAllowedDurationInSeconds;
+    private int openWeatherRefreshDurationInSeconds;
 }

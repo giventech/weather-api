@@ -40,12 +40,11 @@ public class RateLimitingFilter extends OncePerRequestFilter {
 
             // If more than max requests are made within the specified duration, return a 429 error code
             if (requests.size() > rateLimitingProperties.getMaxRequests()) {
-                response.sendError(HttpStatus.TOO_MANY_REQUESTS.value(), "Rate limit exceeded");
+                response.sendError(HttpStatus.TOO_MANY_REQUESTS.value(), "Rate limit exceeded. Please wait before making more requests.");
                 return;
             }
         }
 
         filterChain.doFilter(request, response);
     }
-
 }

@@ -127,7 +127,27 @@ WEATHER_REPORT (Pk: Auto Generated) , city, country, description
 
 
 
-Your service should:
+
+
+
+
+### Optimized API Request Conditions
+
+1. **No Cached Weather Report in the Database:** If there’s no weather report for the requested city and country in the database, make an API request to fetch and store the data.
+
+1. **Rate Limiting Conditions Met:**
+
+If the rate limit has not been exceeded (e.g., a set number of requests per time period), allow the API request to be made.
+Consider rate limiting either by the number of requests or by time duration, as per your configuration.
+1. **Cache Expiry Based on OpenWeather API Recommended Refresh Period:**
+
+If the last cached report’s timestamp exceeds the recommended refresh period (e.g., 10 minutes), make an API request to refresh the data.
+
+
+
+
+**Your service should:**
+
 1. Enforce API Key scheme. An API Key is rate limited to 5 weather reports an hour.
    After that your service should respond in a way which communicates that the
    hourly limit has been exceeded. Create 5 API Keys. Pick a convention for handling
@@ -144,9 +164,5 @@ Your service should:
 5. The API will query the data from H2
 6. Clear Spring Layers are needed.
 7. Follow Rest API convention.
-
-
-
-
 
 

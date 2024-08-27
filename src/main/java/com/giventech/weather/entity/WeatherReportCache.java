@@ -12,8 +12,8 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name = "WEATHER_REPORT", uniqueConstraints = @UniqueConstraint(columnNames = {"city", "country"}))
-public class WeatherReport {
+@Table(name = "WEATHER_REPORT_CACHE", uniqueConstraints = @UniqueConstraint(columnNames = {"city", "country"}))
+public class WeatherReportCache {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
