@@ -21,5 +21,3 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     id: 'Docker Push'
     args: ['push', 'gcr.io/$PROJECT_ID/$REPO_NAME:$SHORT_SHA']
-options:
-  logging: NONE
