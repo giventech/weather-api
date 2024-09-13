@@ -2,16 +2,16 @@ steps:
  # Step 1: Set up Gradle
   - name: 'gcr.io/cloud-builders/docker'
     args: [ 'build', '-t',
-            'australia-southeast1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/hello-world-python:$SHORT_SHA', '.' ]
+            'australia-southeast1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/weather-api:$SHORT_SHA', '.' ]
 
  # Step 4: Build Docker image
   - name: 'gcr.io/cloud-builders/docker'
-    args: [ 'push',  'australia-southeast1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/hello-world-python:$SHORT_SHA' ]
+    args: [ 'push',  'australia-southeast1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/weather-api:$SHORT_SHA' ]
 
 
   - name: google/cloud-sdk
     args: [ 'gcloud', 'run', 'deploy', 'hello-world-python',
-            '--image=australia-southeast1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/hello-world-python:$SHORT_SHA',
+            '--image=australia-southeast1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/weather-api:$SHORT_SHA',
             '--region', 'us-central1', '--platform', 'managed',
             '--allow-unauthenticated' ]
 images:
