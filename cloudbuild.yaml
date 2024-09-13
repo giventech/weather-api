@@ -1,25 +1,18 @@
 steps:
  # Step 1: Set up Gradle
-  - name: 'gcr.io/cloud-builders/gradle'
-    id: 'Build'
-    args: ['build']
-
-  # Step 2: Perform integration tests
-  - name: 'gcr.io/cloud-builders/gradle'
-    id: 'Integration Tests'
-    args: ['test', '--tests', '*IT']
-
-  # Step 3: Perform unit tests
-  - name: 'gcr.io/cloud-builders/gradle'
-
-  # Step 4: Build Docker image
   - name: 'gcr.io/cloud-builders/docker'
-    id: 'Docker Buildf'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/$REPO_NAME:$SHORT_SHA', '.']
+    args: [ 'build', '-t',
+            'australia-southeast1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/hello-world-python:$SHORT_SHA', '.' ]
 
-  # Step 5: Push Docker image to Container Registry
+ # Step 4: Build Docker image
   - name: 'gcr.io/cloud-builders/docker'
-    id: 'Docker Push'
-    args: ['push', 'gcr.io/$PROJECT_ID/$REPO_NAME:$SHORT_SHA']
-options:
-  logging: CLOUD_LOGGING_ONLY
+    args: [ 'push',  'australia-southeast1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/hello-world-python:$SHORT_SHA' ]
+
+
+  - name: google/cloud-sdk
+    args: [ 'gcloud', 'run', 'deploy', 'hello-world-python',
+            '--image=australia-southeast1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/hello-world-python:$SHORT_SHA',
+            '--region', 'us-central1', '--platform', 'managed',
+            '--allow-unauthenticated' ]
+images:
+  - australia-southeast1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/hello-world-python:$SHORT_SHA
