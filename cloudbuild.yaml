@@ -14,5 +14,5 @@ steps:
             '--image=australia-southeast1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/weather-api:$SHORT_SHA',
             '--region', 'us-central1', '--platform', 'managed',
             '--allow-unauthenticated' ]
-images:
-  - australia-southeast1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/hello-world-python:$SHORT_SHA
+options:
+  logging: CLOUD_LOGGING_ONLY  
