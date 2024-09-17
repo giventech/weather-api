@@ -21,4 +21,5 @@ steps:
       - '--allow-unauthenticated'
 timeout: 5000s
 options:
-  logging: CLOUD_LOGGING_ONLY  
+  logging: CLOUD_LOGGING_ONLY
+
