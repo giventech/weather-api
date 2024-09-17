@@ -1,5 +1,5 @@
 steps:
-  - name: 'australia-southeast1-docker.pkg.dev/cloud-builders/docker'
+  - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'australia-southeast1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/full-stack:$SHORT_SHA', '.' , '-f', 'Dockerfile']
     timeout: 600s
   - name: 'gcr.io/cloud-builders/docker'
