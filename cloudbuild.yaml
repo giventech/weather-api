@@ -2,8 +2,8 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'australia-southeast1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/full-stack:$SHORT_SHA', '.' , '-f', 'Dockerfile']
     timeout: 600s
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'australia-southeast1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/full-stack:$SHORT_SHA']
+  #  - name: 'gcr.io/cloud-builders/docker'
+  #    args: ['push', 'australia-southeast1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/full-stack:$SHORT_SHA']
   # Deploy an image from Container Registry to Cloud Run
   - name: 'gcr.io/cloud-builders/gcloud'
     args:
@@ -20,6 +20,7 @@ steps:
       - '8080'
       - '--allow-unauthenticated'
 timeout: 5000s
+image:  'australia-southeast1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/full-stack:$SHORT_SHA'
 options:
   logging: CLOUD_LOGGING_ONLY
 
