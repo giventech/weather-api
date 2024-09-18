@@ -1,26 +1,26 @@
 steps:
   # Run build command without with unit test only for faster performance and feedback
-  - name: gradle:8-jdk17
-    entrypoint: gradle
-  # Build with unit tests only for faster performance and feedback
-    args: [ "test" ]
-
-  # Build with integration tests only for faster performance and feedback
-  - name: gradle:8-jdk17
-    entrypoint: gradle
-    args: [ "build", "-x","integrationTest" ]
-
-  # Package the application and dependencies as a jar file
-  - name: gradle:8-jdk17
-    entrypoint: gradle
-    args: [ "assemble" ]
-  - name: gradle:8-jdk17
-    entrypoint: gradle
-    args: [ "build","integrationTest" ]
+#  - name: gradle:8-jdk17
+#    entrypoint: gradle
+#  # Build with unit tests only for faster performance and feedback
+#    args: [ "test" ]
+#
+#  # Build with integration tests only for faster performance and feedback
+#  - name: gradle:8-jdk17
+#    entrypoint: gradle
+#    args: [ "build", "-x","integrationTest" ]
+#
+#  # Package the application and dependencies as a jar file
+#  - name: gradle:8-jdk17
+#    entrypoint: gradle
+#    args: [ "assemble" ]
+#  - name: gradle:8-jdk17
+#    entrypoint: gradle
+#    args: [ "build","integrationTest" ]
 
   # Build the using the jar file created from the previous step
   - name: gcr.io/cloud-builders/docker
-    args: [ "build", "-t", "australia-southeast1-docker.pkg.dev/$PROJECT_ID/$_REPO_NAME/weather-0.0.1:$SHORT_SHA", "--build-arg=JAR_FILE=build/libs/weather-0.0.1-SNAPSHOT.jar", "." ]
+    args: [ "build", "-t", "australia-southeast1-docker.pkg.dev/$PROJECT_ID/$_REPO_NAME/weather-api:$SHORT_SHA", "--build-arg=JAR_FILE=build/libs/weather-a[i-1.0.0.jar", "." ]
     timeout: 600s
 #  # Build docker image preparing for australia-southeast1 region
 #  - name: 'gcr.io/cloud-builders/docker'
@@ -28,7 +28,7 @@ steps:
 #    timeout: 600s
   # Pushing the docker image on the artifactory repository.
   - name: 'gcr.io/cloud-builders/docker'
-    args: [ 'push', 'australia-southeast1-docker.pkg.dev/$PROJECT_ID/$_REPO_NAME/weather-0.0.1-SNAPSHOT:$SHORT_SHA' ]
+    args: [ 'push', 'australia-southeast1-docker.pkg.dev/$PROJECT_ID/$_REPO_NAME/weather-api:$SHORT_SHA' ]
   # Deploy an image from Container Registry to Cloud Run
   - name: 'gcr.io/cloud-builders/gcloud'
     args:
@@ -36,7 +36,7 @@ steps:
       - 'deploy'
       - 'full-stack'
       - '--image'
-      - 'australia-southeast1-docker.pkg.dev/$PROJECT_ID/$_REPO_NAME/weather-0.0.1-SNAPSHOT:$SHORT_SHA'
+      - 'australia-southeast1-docker.pkg.dev/$PROJECT_ID/$_REPO_NAME/weather-api:$SHORT_SHA'
       - '--region'
       - 'australia-southeast1'
       - '--platform'
