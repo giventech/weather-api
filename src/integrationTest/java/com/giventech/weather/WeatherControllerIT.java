@@ -1,4 +1,5 @@
 package com.giventech.weather;
+
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
@@ -20,7 +21,7 @@ import org.springframework.web.client.RestTemplate;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles(value = "test")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = WeatherApplication.class)
 public class WeatherControllerIT {
 
     @LocalServerPort
@@ -42,7 +43,7 @@ public class WeatherControllerIT {
                 .willReturn(WireMock.aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
-                        .withHeader("Authorization", "your-api-key")
+                        .withHeader("Authorization", "apiKey1")
                         .withBody("{\"weather\": [{\"description\": \"clear sky\"}], \"main\": {\"temp\": 288.55}}")));
         // Configure WireMock stub
 
@@ -58,7 +59,7 @@ public class WeatherControllerIT {
     @Test
     public void testGetWeather() {
         String baseUrl = "http://localhost:" + port + "/weather/api";
-        String url = baseUrl + "?city=454654&country=UK";
+        String url = baseUrl + "?city=London&country=UK";
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "apiKey1");

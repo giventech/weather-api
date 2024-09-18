@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.3.2'
 	id 'io.spring.dependency-management' version '1.1.6'
+
 }
 
 group = 'com.giventech'
@@ -47,13 +48,6 @@ dependencies {
 
 // WireMock core
 	testImplementation "org.wiremock:wiremock-jetty12:3.9.1"
-
-//	// Jetty dependencies for WireMock
-//	testImplementation 'org.eclipse.jetty:jetty-server:9.4.51.v20230802' // Latest 9.x version as of August 2023
-//	testImplementation 'org.eclipse.jetty:jetty-http:9.4.51.v20230802'
-//	testImplementation 'org.eclipse.jetty:jetty-io:9.4.51.v20230802'
-//	testImplementation 'org.eclipse.jetty:jetty-util:9.4.51.v20230802'
-
 	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
 	testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
 
@@ -61,6 +55,51 @@ dependencies {
 	// JUnit 4 dependencies (if using JUnit 4 for some tests)
 	testImplementation 'junit:junit:4.13.2'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+
+
+testing {
+	suites {
+		integrationTest(JvmTestSuite) {
+			dependencies {
+				implementation project()
+				implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+				implementation 'org.springframework.boot:spring-boot-starter-validation'
+				implementation 'org.springframework.boot:spring-boot-starter-web'
+				implementation 'org.springframework.boot:spring-boot-starter-webflux'
+				implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
+				implementation 'org.springframework.boot:spring-boot-starter-web'
+				implementation 'javax.servlet:javax.servlet-api:4.0.1'
+				implementation 'org.projectlombok:lombok'
+				implementation 'org.springframework.boot:spring-boot-starter-test'
+				implementation 'org.springframework.boot:spring-boot-starter-json'
+				implementation 'org.springframework.boot:spring-boot-testcontainers'
+				implementation 'io.projectreactor:reactor-test'
+				implementation 'org.testcontainers:junit-jupiter'
+				implementation 'org.mockito:mockito-core:3.12.4'
+
+
+				implementation "org.wiremock:wiremock-jetty12:3.9.1"
+				implementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
+				implementation 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
+				implementation 'junit:junit:4.13.2'
+				implementation 'org.junit.platform:junit-platform-launcher'
+			}
+
+
+		}
+	}
+}
+
+configurations {
+	integrationTestImplementation.extendsFrom implementation
+	integrationTestRuntimeOnly.extendsFrom runtimeOnly
+}
+
+
+tasks.named('check') {
+	dependsOn testing.suites.integrationTest
 }
 
 tasks.named('test') {
