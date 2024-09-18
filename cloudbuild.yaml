@@ -26,7 +26,7 @@ steps:
 #  - name: 'gcr.io/cloud-builders/docker'
 #    args: [ 'build', '-t', 'australia-southeast1-docker.pkg.dev/$PROJECT_ID/$_REPO_NAME/weather-0.0.1-SNAPSHOT:$SHORT_SHA', '.' , '-f', 'Dockerfile' ]
 #    timeout: 600s
-  # Pushing the docker image on the artifactory repository
+  # Pushing the docker image on the artifactory repository.
   - name: 'gcr.io/cloud-builders/docker'
     args: [ 'push', 'australia-southeast1-docker.pkg.dev/$PROJECT_ID/$_REPO_NAME/weather-0.0.1-SNAPSHOT:$SHORT_SHA' ]
   # Deploy an image from Container Registry to Cloud Run
