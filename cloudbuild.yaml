@@ -1,9 +1,17 @@
 steps:
+  # Run build command without with unit test only for faster performance and feedback
+  - name: 'gcr.io/cloud-builders/gradle'
+    args: [ 'build','-x','integrationTest' ]
+  # Build integration tests only when build and unit tests are successful
+  - name: 'gcr.io/cloud-builders/gradle'
+    args: [ 'build','integrationTest' ]
+  # Build docker image preparing for australia-southeast1 region
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'australia-southeast1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/full-stack:$SHORT_SHA', '.' , '-f', 'Dockerfile']
+    args: [ 'build', '-t', 'australia-southeast1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/full-stack:$SHORT_SHA', '.' , '-f', 'Dockerfile' ]
     timeout: 600s
+  # Build docker image preparing for australia-southeast1 region
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'australia-southeast1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/full-stack:$SHORT_SHA']
+    args: [ 'push', 'australia-southeast1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/full-stack:$SHORT_SHA' ]
   # Deploy an image from Container Registry to Cloud Run
   - name: 'gcr.io/cloud-builders/gcloud'
     args:
