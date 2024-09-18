@@ -20,7 +20,7 @@ steps:
 
   # Build the using the jar file created from the previous step
   - name: gcr.io/cloud-builders/docker
-    args: [ 'build', '-t', 'australia-southeast1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/weather-api:$SHORT_SHA', '--build-arg=JAR_FILE=build/libs/weather-a[i-1.0.0.jar', '.' ]
+    args: [ 'build', '-t', 'australia-southeast1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/weather-api:$SHORT_SHA', '--build-arg=JAR_FILE=build/libs/weather-api-1.0.0.jar', '.' ]
     timeout: 600s
 #  # Build docker image preparing for australia-southeast1 region
 #  - name: 'gcr.io/cloud-builders/docker'
