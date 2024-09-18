@@ -13,6 +13,7 @@
 
 FROM gradle:jdk17-alpine
 ARG JAR_FILE=JAR_FILE_MUST_BE_SPECIFIED_AS_BUILD_ARG
-COPY ${JAR_FILE} app.jar
+RUN mkdir /app
+COPY ${JAR_FILE} /app/weather-api-1.0.0.jar
 EXPOSE 8080
-ENTRYPOINT ["java", "-Djava.security.edg=file:/dev/./urandom","-jar","/app.jar"]
+ENTRYPOINT ["java", "-Djava.security.edg=file:/dev/./urandom","-jar","/app/weather-api-1.0.0.jar"]
