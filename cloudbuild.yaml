@@ -1,22 +1,22 @@
 steps:
-#  # Run build command without with unit test only for faster performance and feedback
-#  - name: gradle:8-jdk17
-#    entrypoint: gradle
-#  # Build with unit tests only for faster performance and feedback
-#    args: [ "test" ]
-#
-#  # Build with integration tests only for faster performance and feedback
-#  - name: gradle:8-jdk17
-#    entrypoint: gradle
-#    args: [ "build", "-x","integrationTest" ]
-#
-#  # Package the application and dependencies as a jar file
-#  - name: gradle:8-jdk17
-#    entrypoint: gradle
-#    args: [ "assemble" ]
-#  - name: gradle:8-jdk17
-#    entrypoint: gradle
-#    args: [ "build","integrationTest" ]
+  # Run build command without with unit test only for faster performance and feedback
+  - name: gradle:8-jdk17
+    entrypoint: gradle
+  # Build with unit tests only for faster performance and feedback
+    args: [ "test" ]
+
+  # Build with integration tests only for faster performance and feedback
+  - name: gradle:8-jdk17
+    entrypoint: gradle
+    args: [ "build", "-x","integrationTest" ]
+
+  # Package the application and dependencies as a jar file
+  - name: gradle:8-jdk17
+    entrypoint: gradle
+    args: [ "assemble" ]
+  - name: gradle:8-jdk17
+    entrypoint: gradle
+    args: [ "build","integrationTest" ]
 
   # Build the using the jar file created from the previous step
   - name: gcr.io/cloud-builders/docker
