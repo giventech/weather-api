@@ -5,6 +5,6 @@ WORKDIR /home/gradle/src
 RUN gradle bootJar --no-daemon
 FROM gradle:jdk-alpine
 RUN mkdir /app
-COPY --from=build /home/gradle/src/build/libs/*.jar /app/weather-api-0.0.1-SNAPSHOT.jar
+COPY --from=build /home/gradle/src/build/libs/*.jar /app/weather-api-1.0.0.jar
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","/app/weather-api-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java","-jar","/app/weather-api-1.0.0.jar"]
