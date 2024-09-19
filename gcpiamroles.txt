@@ -1,0 +1,12 @@
+PROJECT_ID="training-435183"
+USER_EMAIL="t.martinica@gmail.com"
+ROLES=(
+  "roles/cloudbuild.builds.editor"
+  "roles/run.admin"
+  "roles/iam.serviceAccountCreator"
+  "roles/resourcemanager.projectIamAdmin"
+  "roles/pubsub.editor"
+  "roles/iam.serviceAccountUser"
+  "roles/serviceusage.serviceUsageConsumer"
+  "roles/storage.admin"
+)
