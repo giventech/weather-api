@@ -12,8 +12,11 @@
 
 
 FROM gradle:jdk17-alpine
+RUN addgroup -S spring && adduser -S spring -G spring
+USER spring:spring
+WORKDIR /home/spring/
+RUN mkdir app
 ARG JAR_FILE=JAR_FILE_MUST_BE_SPECIFIED_AS_BUILD_ARG
-RUN mkdir /app
-COPY ${JAR_FILE} /app/weather-api-1.0.0.jar
+COPY ${JAR_FILE} /home/spring/app/weather-api-1.0.0.jar
 EXPOSE 8080
-ENTRYPOINT ["java", "-Djava.security.edg=file:/dev/./urandom","-jar","/app/weather-api-1.0.0.jar"]
+ENTRYPOINT ["java","-jar","/home/spring/app/weather-api-1.0.0.jar"]
