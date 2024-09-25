@@ -1,35 +1,43 @@
 steps:
-  # Run build command without with unit test only for faster performance and feedback
+  # # Build  unit tests  ony only for faster performance and feedback
   - name: gradle:8-jdk17
     entrypoint: gradle
-  # Build with unit tests only for faster performance and feedback
     args: [ "test" ]
+    id: unit_test_step
 
   # Build with integration tests only for faster performance and feedback
   - name: gradle:8-jdk17
     entrypoint: gradle
     args: [ "build", "-x","integrationTest" ]
+    id: build_step
+    waitFor: [ 'unit_test_step' ]  # This step waits for integration_test_step to complete
 
-  # Package the application and dependencies as a jar file
-  - name: gradle:8-jdk17
-    entrypoint: gradle
-    args: [ "assemble" ]
+
   - name: gradle:8-jdk17
     entrypoint: gradle
     args: [ "build","integrationTest" ]
+    id: integration_test_step
+    waitFor: [ 'build_step' ]  # This step waits for build_step to complete
+
+
+#  # Package the application and dependencies as a jar file
+#  - name: gradle:8-jdk17
+#    entrypoint: gradle
+#    args: [ "assemble" ]
 
   # Build the using the jar file created from the previous step
   - name: gcr.io/cloud-builders/docker
     args: [ 'build', '-t', 'australia-southeast1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/weather-api:$SHORT_SHA', '--build-arg=JAR_FILE=build/libs/weather-api-1.0.0.jar', '.' ]
     timeout: 600s
-#  # Build docker image preparing for australia-southeast1 region
-#  - name: 'gcr.io/cloud-builders/docker'
-#    args: [ 'build', '-t', 'australia-southeast1-docker.pkg.dev/$PROJECT_ID/$_REPO_NAME/weather-0.0.1-SNAPSHOT:$SHORT_SHA', '.' , '-f', 'Dockerfile' ]
-#    timeout: 600s
+    waitFor: [ 'integration_test_step' ]  # This step waits for integration_test_step to complete
+
   # Pushing the docker image on the artifactory repository.
   - name: 'gcr.io/cloud-builders/docker'
     args: [ 'push', 'australia-southeast1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/weather-api:$SHORT_SHA' ]
-  # Deploy an image from Container Registry to Cloud Run
+    waitFor: [ 'integration_test_step' ]  # This step waits for integration_test_step to complete
+  - id: artifactory-push
+
+  # Deploy image from Container Registry to Cloud Run
   - name: 'gcr.io/cloud-builders/gcloud'
     args:
       - 'run'
@@ -44,6 +52,8 @@ steps:
       - '--port'
       - '8080'
       - '--allow-unauthenticated'
+  - id: cloud_run_deploy
+    waitFor: [ 'artifactory-push' ]  # This step waits for artifactory-push to complete
 timeout: 5000s
 options:
   logging: CLOUD_LOGGING_ONLY
