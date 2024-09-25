@@ -3,7 +3,7 @@ steps:
   - name: gradle:8-jdk17
     entrypoint: gradle
     args: [ "test" ]
-#    id: "unit_test_step"
+    id: "unit_test_step"
 
   # Build with integration tests only for faster performance and feedback
   - name: gradle:8-jdk17
