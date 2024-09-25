@@ -35,7 +35,7 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: [ 'push', 'australia-southeast1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/weather-api:$SHORT_SHA' ]
     waitFor: [ 'integration_test_step' ]  # This step waits for integration_test_step to complete
-  - id: "artifactory-push"
+  - id: "artifactory_push"
 
   # Deploy image from Container Registry to Cloud Run
   - name: 'gcr.io/cloud-builders/gcloud'
@@ -52,8 +52,8 @@ steps:
       - '--port'
       - '8080'
       - '--allow-unauthenticated'
-  - id: cloud_run_deploy
-    waitFor: [ 'artifactory-push' ]  # This step waits for artifactory-push to complete
+  - id: "cloud_run_deploy"
+    waitFor: [ 'artifactory_push' ]  # This step waits for artifactory-push to complete
 timeout: 5000s
 options:
   logging: CLOUD_LOGGING_ONLY
