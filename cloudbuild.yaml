@@ -5,6 +5,12 @@ steps:
     args: [ "test" ]
     id: "unit_test_step"
 
+  # Package the application and dependencies as a jar file
+  - name: gradle:8-jdk17
+    entrypoint: gradle
+    id: "package_gradle"
+    args: [ "assemble" ]
+
   # Build with integration tests only for faster performance and feedback
   - name: gradle:8-jdk17
     entrypoint: gradle
@@ -12,7 +18,7 @@ steps:
     id: "build_step"
     waitFor: [ "unit_test_step" ]  # This step waits for unit_test_step to complete
 
-  # Run integration tests after build
+
   - name: gradle:8-jdk17
     entrypoint: gradle
     args: [ "build", "integrationTest" ]
@@ -23,13 +29,13 @@ steps:
   - name: gcr.io/cloud-builders/docker
     args: [ 'build', '-t', 'australia-southeast1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/weather-api:$SHORT_SHA', '--build-arg=JAR_FILE=build/libs/weather-api-1.0.0.jar', '.' ]
     timeout: 600s
-    id: "build image"
+    id: "build_image"
     waitFor: [ 'integration_test_step' ]  # This step waits for integration_test_step to complete
 
   # Push the Docker image to the artifact repository
   - name: 'gcr.io/cloud-builders/docker'
     args: [ 'push', 'australia-southeast1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/weather-api:$SHORT_SHA' ]
-    waitFor: [ 'integration_test_step' ]  # This step waits for integration_test_step to complete
+    waitFor: [ 'build_image' ]  # This step waits for integration_test_step to complete
     id: "artifactory_push"
 
   # Deploy image from Container Registry to Cloud Run
@@ -47,6 +53,8 @@ steps:
       - '--port'
       - '8080'
       - '--allow-unauthenticated'
+    waitFor: [ 'artifactory_push' ]  # This step waits for integration_test_step to complete
+
 timeout: 5000s
 options:
   logging: CLOUD_LOGGING_ONLY
