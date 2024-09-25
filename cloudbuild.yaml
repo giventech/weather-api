@@ -28,8 +28,8 @@ steps:
   # Push the Docker image to the artifact repository
   - name: 'gcr.io/cloud-builders/docker'
     args: [ 'push', 'australia-southeast1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/weather-api:$SHORT_SHA' ]
-#    waitFor: [ 'integration_test_step' ]  # This step waits for integration_test_step to complete
-#    id: "artifactory_push"
+    waitFor: [ 'integration_test_step' ]  # This step waits for integration_test_step to complete
+    id: "artifactory_push"
 
   # Deploy image from Container Registry to Cloud Run
   - name: 'gcr.io/cloud-builders/gcloud'
