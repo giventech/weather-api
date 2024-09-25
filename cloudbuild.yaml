@@ -23,6 +23,7 @@ steps:
   - name: gcr.io/cloud-builders/docker
     args: [ 'build', '-t', 'australia-southeast1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/weather-api:$SHORT_SHA', '--build-arg=JAR_FILE=build/libs/weather-api-1.0.0.jar', '.' ]
     timeout: 600s
+    id: "build image"
     waitFor: [ 'integration_test_step' ]  # This step waits for integration_test_step to complete
 
   # Push the Docker image to the artifact repository
