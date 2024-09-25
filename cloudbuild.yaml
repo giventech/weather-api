@@ -9,21 +9,21 @@ steps:
   - name: gradle:8-jdk17
     entrypoint: gradle
     args: [ "build", "-x", "integrationTest" ]
-#    id: "build_step"
-#    waitFor: [ "unit_test_step" ]  # This step waits for unit_test_step to complete
+    id: "build_step"
+    waitFor: [ "unit_test_step" ]  # This step waits for unit_test_step to complete
 
   # Run integration tests after build
   - name: gradle:8-jdk17
     entrypoint: gradle
     args: [ "build", "integrationTest" ]
-#    id: "integration_test_step"
-#    waitFor: [ "build_step" ]  # This step waits for build_step to complete
+    id: "integration_test_step"
+    waitFor: [ "build_step" ]  # This step waits for build_step to complete
 
   # Build the Docker image using the jar file created from the previous steps
   - name: gcr.io/cloud-builders/docker
     args: [ 'build', '-t', 'australia-southeast1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/weather-api:$SHORT_SHA', '--build-arg=JAR_FILE=build/libs/weather-api-1.0.0.jar', '.' ]
     timeout: 600s
-#    waitFor: [ 'integration_test_step' ]  # This step waits for integration_test_step to complete
+    waitFor: [ 'integration_test_step' ]  # This step waits for integration_test_step to complete
 
   # Push the Docker image to the artifact repository
   - name: 'gcr.io/cloud-builders/docker'
